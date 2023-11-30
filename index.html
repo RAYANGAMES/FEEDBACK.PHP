@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+
+<div class="feed" id="feed">
+    <br />
+    <h3><u>Feedback</u></h3><br />
+    <p id="forinfo">Write down your valuable feedback or suggestions; it will help US a lot to do better in the future.</p><br />
+
+    <input type="text" id="name" placeholder="Your name" required><br />
+    <input type="email" id="mail" placeholder="Your email id" required><br />
+    <textarea id="feedback" placeholder="Write here....." required></textarea><br />
+    <button class="submit" id="sentbtn"><i class="fa fa-send"></i> Send</button><br />
+</div>
+
+<div id="feedbackList"></div>
+
+<script>
+    var subbtn = document.getElementById("sentbtn");
+
+    subbtn.addEventListener("click", () => {
+        var name = document.getElementById("name");
+        var mail = document.getElementById("mail");
+        var feedback = document.getElementById("feedback");
+
+        if (name.value === "") {
+            alert("Please tell me your name.");
+            return false;
+        } else if (mail.value === "" || !validateEmail(mail.value)) {
+            alert("Please provide a valid email address.");
+            return false;
+        } else if (feedback.value === "") {
+            alert("Write something interesting about my code.");
+            return false;
+        } else {
+            var feedbackData = {
+                name: name.value,
+                mail: mail.value,
+                feedback: feedback.value
+            };
+
+            saveToLocalStorage(feedbackData);
+
+            displayFeedback(feedbackData);
+
+            name.value = "";
+            mail.value = "";
+            feedback.value = "";
+
+            alert("Thanks for sharing your feedback with me. It'll help US a lot.");
+        }
+    });
+
+    function validateEmail(email) {
+        var re = /\S+@\S+\.\S+/;
+        return re.test(email);
+    }
+
+    function saveToLocalStorage(data) {
+        var previousData = JSON.parse(localStorage.getItem("feedbackData")) || [];
+        previousData.push(data);
+        localStorage.setItem("feedbackData", JSON.stringify(previousData));
+    }
+
+    function displayFeedback(data) {
+        var feedbackList = document.getElementById("feedbackList");
+
+        var box = document.createElement("div");
+        var nameElement = document.createElement("h4");
+        var mailElement = document.createElement("h5");
+        var messageElement = document.createElement("h6");
+
+        nameElement.innerText = data.name;
+        nameElement.classList.add("namev");
+        box.appendChild(nameElement);
+
+        mailElement.innerText = data.mail;
+        mailElement.classList.add("mailv");
+        box.appendChild(mailElement);
+
+        messageElement.innerText = data.feedback;
+        messageElement.classList.add("msg");
+        box.appendChild(messageElement);
+
+        box.classList.add("box");
+        feedbackList.appendChild(box);
+    }
+
+    window.onload = function () {
+        var previousData = JSON.parse(localStorage.getItem("feedbackData")) || [];
+        var feedbackList = document.getElementById("feedbackList");
+
+        previousData.forEach(function (data) {
+            displayFeedback(data);
+        });
+    };
+</script>
+
+</body>
+</html>
+
+<style>
+    *{
+    margin:0;
+    padding:0;
+}
+
+body{
+    text-align:center ;
+    background-color:#3fb6b2;
+    box-sizing:border-box ;
+}
+
+
+.feed{
+    width:100vw;
+    height:100%;
+    margin:auto;
+    left:0;
+    right:0;
+    text-align:center ;
+    background-color:transparent;
+    overflow:hidden ;
+    display:;
+}
+
+.feed h3{
+    font-size:25px;
+    color:#fff;
+}
+
+.feed p{
+    font-size:14px;
+    font-weight:400;
+    margin:0 15px;
+    color:#fff;
+}
+
+.feed input{
+    width:80%;
+    border-radius:5px;
+    border:1px solid #505050;
+    padding:10px;
+    letter-spacing:.4px;
+    font-family:Courier new;
+    font-size:18px;
+    font-weight:700;
+    outline-color:#514cd2;
+    margin:auto;
+    left:0;
+    right:0;
+    margin-bottom:10px;
+}
+
+
+.feed textarea{
+    width:80%;
+    height:160px;
+    border-radius:5px;
+    border:1px solid #505050;
+    padding:10px;
+    letter-spacing:0.2px;
+    font-family:Courier new;
+    font-size:18px;
+    font-weight:700;
+    outline-color:#514cd2;
+    margin:auto;
+    left:0;
+    right:0;
+}
+
+.feed button{
+    width:60%;
+    padding:10px 0;
+    background-color:#514CD2;
+    font-size:18px;
+    font-weight:600;
+    color:#fff;
+    border:2px solid gold;
+    outline:none;
+    border-radius:5px;
+    margin:10% 20%;
+}
+
+
+.feed button:active{
+    background-color:gold;
+    color:#514CD2;
+}
+
+
+
+.box{
+    width:90%;
+    height:auto;
+    border:2px solid #fff;
+    border-radius:10px;
+    padding:10px 0;
+    margin:auto;
+    left:0;
+    right:0;
+    margin-top:10px;
+    margin-bottom:50px;
+    background-color:#e1306c;
+    text-align:center ;
+    align-items:center ;
+    justify-content:center ;
+}
+
+.box .namev {
+    color:#ffc;
+    font-size:20px;
+    font-weight:500;
+    width:90%;
+    margin:auto;
+    left:0;
+    right:0;
+    padding:0 4px;
+    background-color:transparent ;
+    text-align:left;
+    letter-spacing:0.5px;
+}
+
+.box .mailv {
+    color:#ffc;
+    font-size:12px;
+    font-weight:400;
+    width:90%;
+    margin:auto;
+    left:0;
+    right:0;
+    padding:0 4px;
+    background-color:transparent;
+    margin-bottom:10px;
+    text-align:left;
+    letter-spacing:0.8px;
+}
+
+.box .msg{
+    color:#fff;
+    font-size:16px;
+    font-weight:700;
+    width:90%;
+    margin:auto;
+    left:0;
+    right:0;
+    padding:8px 4px;
+    background-color:rgba(255, 255, 255, 0.2);
+    text-align:left;
+    letter-spacing:1px;
+    line-break:inline;
+    word-break:break-all;
+    text-overflow:ellipsis;
+}
+
+
+
+    #feedbackList {
+        margin-top: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    #feedbackList .box {
+        background-color: #e1306c;
+        margin: 5px;
+    }
+</style>
